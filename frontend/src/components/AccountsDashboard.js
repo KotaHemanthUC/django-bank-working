@@ -1,31 +1,31 @@
 import React, {useEffect, useState} from "react";
 import axiosInstance from "../axios";
+import AccountCard from "./AccountCard";
+import { Grid } from "@mui/material";
 
 
-const Dashboard = () => {
+const AccountsDashboard = () => {
     const [accounts , setAccounts] = useState([])
 
     useEffect(() => {
-        axiosInstance.get('bank/accounts/')
+        axiosInstance.get('bank/accounts/'
+        )
             .then((res) => {
                 setAccounts(res.data)
-                console.log(res.data)
             });
     }, []);
 
 
     return (
         <div>
-        <h1>Dashboard</h1>
+        <h1>Accounts</h1>
+        <Grid container columnGap={5} rowGap={5}>
         {accounts.map((account) => (
-            <div key={account.id}>
-                <h2>{account.account_number}</h2>
-                <p>{account.account_id}</p>
-                <p>{account.balance}</p>
-            </div>
+            <AccountCard key={account.id} account={account} />
         ))}
+        </Grid>
         </div>
     );
     }
 
-export default Dashboard;
+export default AccountsDashboard;

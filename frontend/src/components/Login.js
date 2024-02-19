@@ -27,7 +27,6 @@ export default function Login() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(formData);
 
 		axiosInstance
 			.post(`api/token/`, {
@@ -37,18 +36,16 @@ export default function Login() {
 			.then((res) => {
                 localStorage.setItem('access_token', res.data.access);
                 localStorage.setItem('refresh_token', res.data.refresh);
-                axiosInstance.defaults.headers['Authorization'] =
+                axiosInstance.defaults.headers.Authorization =
                     'JWT ' + localStorage.getItem('access_token');
-                navigate('/dashboard');
-				console.log(res);
-				console.log(res.data);
+                navigate('/accounts');
 			});
 	};
 
     // Check if the user is already logged in if so route to the dashboard
     useEffect(() => {
         if (localStorage.getItem('access_token')) {
-            navigate('/dashboard');
+            navigate('/accounts');
         }
     }, [navigate]);
 

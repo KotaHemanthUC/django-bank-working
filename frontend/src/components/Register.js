@@ -28,7 +28,6 @@ export default function Register() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(formData);
 
 		axiosInstance
 			.post(`users/create/`, {
@@ -38,8 +37,6 @@ export default function Register() {
 			})
 			.then((res) => {
 				navigate('/login');
-				console.log(res);
-				console.log(res.data);
 			});
 	};
 

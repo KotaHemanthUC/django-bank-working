@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
     timeout: 1000,
     headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('access_token') ? `JWT ${localStorage.getItem('token')}` :null ,
+        Authorization: localStorage.getItem('access_token') ? `JWT ${localStorage.getItem('access_token')}` : null ,
         Accept: 'application/json'
     }
     });
@@ -61,8 +61,8 @@ const axiosInstance = axios.create({
                         return axiosInstance
                             .post('api/token/refresh/', { refresh: refreshToken })
                             .then((response) => {
+                                console.log(response);  
                                 localStorage.setItem('access_token', response.data.access);
-                                localStorage.setItem('refresh_token', response.data.refresh);
     
                                 axiosInstance.defaults.headers['Authorization'] =
                                     'JWT ' + response.data.access;

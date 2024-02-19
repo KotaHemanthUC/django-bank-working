@@ -1,5 +1,6 @@
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import AccountsDashboard from './components/AccountsDashboard';
+import TransactionsDashboard from './components/TransactionsDashboard';
 import Register from './components/Register';
 import Header from './components/Header';
 import {
@@ -10,6 +11,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import React from 'react';
+import VerticalTabs from './components/Home';
 
 const Root = () => {
   return (
@@ -25,7 +27,9 @@ const routes = (
     <Route path='/' element={<Root />} >
       <Route index element={<Login />} />
       <Route path="login" element={<Login />} />,
-      <Route path="dashboard" element={<Dashboard />} />,
+      <Route path="home" element={<VerticalTabs />} />,
+      <Route path="accounts" element={<AccountsDashboard />} />,
+      <Route path="transactions" element={<TransactionsDashboard />} />,
       <Route path="register" element={<Register />} />,
     </Route>
 
