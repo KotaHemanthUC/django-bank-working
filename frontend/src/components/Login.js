@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -44,6 +44,13 @@ export default function Login() {
 				console.log(res.data);
 			});
 	};
+
+    // Check if the user is already logged in if so route to the dashboard
+    useEffect(() => {
+        if (localStorage.getItem('access_token')) {
+            navigate('/dashboard');
+        }
+    }, [navigate]);
 
 
 	return (
