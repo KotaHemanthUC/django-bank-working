@@ -39,6 +39,8 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 # Application definition
 
 INSTALLED_APPS = [
+    'app_bank.apps.AppBankConfig',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,6 +77,18 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+
+}
+
 WSGI_APPLICATION = 'project_bank.wsgi.application'
 
 
@@ -84,11 +98,11 @@ WSGI_APPLICATION = 'project_bank.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",  # set in docker-compose.yml
-        "PORT": 5432,  # default postgres port
+        "NAME": env('POSTGRES_DB'),
+        "USER": env('POSTGRES_USER'),
+        "PASSWORD": env('POSTGRES_PASSWORD'),
+        "HOST": env('POSTGRES_HOST'),
+        "PORT": env('POSTGRES_PORT'),
     }
 }
 
