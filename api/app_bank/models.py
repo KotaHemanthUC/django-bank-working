@@ -7,7 +7,6 @@ class Account(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     account_id = models.CharField(max_length=10, unique=True)
     account_number = models.CharField(max_length=20)
-    current_balance = models.DecimalField(max_digits=10, decimal_places=2)
     account_holder = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='accounts', on_delete=models.CASCADE)
 
     # not sure if this is the best way to generate account_id
@@ -16,6 +15,11 @@ class Account(models.Model):
             max_id = Account.objects.aggregate(max_id=models.Max('account_id'))['max_id']
             self.account_id = f"A-{int(max_id.split('-')[-1]) + 1:04d}" if max_id else "A-0001"
         super().save(*args, **kwargs)
+    
+    def current_balance(self):
+        # get the sum of all transactions
+        return self.transactions.aggregate(balance=models.Sum('amount'))['balance'] or 0
+
 
     def __str__(self):
         return self.account_id

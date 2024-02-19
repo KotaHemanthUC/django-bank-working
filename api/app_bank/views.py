@@ -24,6 +24,7 @@ from rest_framework import permissions
 class AccountViewPermission(permissions.BasePermission):
     message = 'view is restricted to the owner only'
     def has_object_permission(self, request, view, obj):
+        print("USER", request.user)
         return obj.account_holder == request.user
     
 class AccountList(viewsets.ModelViewSet):
@@ -48,3 +49,19 @@ class AccountList(viewsets.ModelViewSet):
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED, data={"detail": "Authentication credentials were not provided."})
 
+class TransactionList(viewsets.ModelViewSet):
+    serializer_class = TransactionSerializer
+
+    def get_queryset(self):
+        # get the transactions of the user by getting the accounts of the user and then getting the transactions of the accounts
+        return Transaction.objects.filter(account__account_holder=self.request.user)
+    
+    def get_object(self):
+        return super().get_object()
+    
+    def list(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            serializer = TransactionSerializer(self.get_queryset(), many=True)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED, data={"detail": "Authentication credentials were not provided."})
