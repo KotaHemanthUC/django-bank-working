@@ -21,27 +21,30 @@ from rest_framework import permissions
  
  # import rest_framework User
 
-class AccountViePermission(permissions.BasePermission):
+class AccountViewPermission(permissions.BasePermission):
     message = 'view is restricted to the owner only'
     def has_object_permission(self, request, view, obj):
         return obj.account_holder == request.user
-
-class AccountList(generics.ListCreateAPIView):
-    queryset = Account.objects.all()
+    
+class AccountList(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [AccountViewPermission]
 
-class AccountDetail(generics.RetrieveUpdateDestroyAPIView, AccountViePermission):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, AccountViePermission]
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+    def get_queryset(self):
+        return Account.objects.all()
+    
+    def perform_create(self, serializer):
+        serializer.save(account_holder=self.request.user)
+    
+    def get_object(self):
+        return super().get_object()
+    
+    def list(self, request, *args, **kwargs):
+        # return the accounts of the user
+        if request.user.is_authenticated:
+            queryset = Account.objects.filter(account_holder=request.user)
+            serializer = AccountSerializer(queryset, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED, data={"detail": "Authentication credentials were not provided."})
 
-class TransactionList(generics.ListCreateAPIView):
-    queryset = Transaction.objects.all()
-    serializer_class = TransactionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-class TransactionDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Transaction.objects.all()
-    serializer_class = TransactionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
