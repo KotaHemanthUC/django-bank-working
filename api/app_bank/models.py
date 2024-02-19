@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.conf import settings
 import uuid
 
@@ -11,6 +10,7 @@ class Account(models.Model):
     current_balance = models.DecimalField(max_digits=10, decimal_places=2)
     account_holder = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='accounts', on_delete=models.CASCADE)
 
+    # not sure if this is the best way to generate account_id
     def save(self, *args, **kwargs):
         if not self.account_id:
             max_id = Account.objects.aggregate(max_id=models.Max('account_id'))['max_id']
