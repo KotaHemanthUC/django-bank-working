@@ -10,7 +10,7 @@ import {
 import React from "react";
 import Home from "./components/Home";
 import CreateTransactionForm from "./components/CreateTransactionForm";
-import ProtectedElement from "./ProtectedElement";
+import ProtectedElement from "./components/ProtectedElement";
 
 const routes = (
   <React.Fragment>
