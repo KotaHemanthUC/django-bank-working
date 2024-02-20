@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axiosInstance from '../axios';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { apiLogin } from '../auth';
+import { apiLogin } from '../services/auth';
 
 
 export default function Login() {
@@ -27,16 +25,14 @@ export default function Login() {
 		});
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-        apiLogin(formData.email, formData.password);
+        await apiLogin(formData.email, formData.password)
         navigate('/home');
 	};
 
-    
-
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container component="main" maxWidth="xs" style={{marginTop:'20px'}}>
 			<CssBaseline />
 			<div>
 				<Typography component="h1" variant="h5">
@@ -76,18 +72,11 @@ export default function Login() {
 						fullWidth
 						variant="contained"
 						color="primary"
-
+                        style={{marginTop:'20px'}}
 						onClick={handleSubmit}
 					>
 						Login
 					</Button>
-					<Grid container justify="flex-end">
-						<Grid item>
-							<Link href="#" variant="body2">
-								Already have an account? Sign in
-							</Link>
-						</Grid>
-					</Grid>
 				</form>
 			</div>
 		</Container>

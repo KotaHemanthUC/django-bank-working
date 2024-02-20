@@ -3,15 +3,14 @@ import { Grid, TextField, Button } from "@mui/material";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { formatISO } from "date-fns";
-
-import axiosInstance from "../axios";
+import { createTransaction, getAccounts } from "../services/bank";
 
 const CreateTransactionForm = () => {
   const [accounts, setAccounts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstance.get("bank/accounts/").then((res) => {
+    getAccounts().then((res) => {
       setAccounts(res.data);
     });
   }, []);
@@ -33,19 +32,13 @@ const CreateTransactionForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axiosInstance
-      .post("bank/transactions/", {
-        transaction_type: formData.transaction_type,
-        amount: formData.amount,
-        account: formData.account,
-        date: formatISO(new Date()),
-        note: formData.note,
-
-      })
-      .then((res) => {
-        console.log(res);
-        navigate("/home");
-      });
+    const data = {
+      ...formData,
+      date: formatISO(new Date()),
+    };
+    createTransaction(data).then((res) => {
+      navigate("/home");
+    });
   };
 
   return (
@@ -79,8 +72,8 @@ const CreateTransactionForm = () => {
               onChange={handleChange}
             >
               {accounts.map((account) => (
-                <MenuItem  key={account.id} value={account.account_number}>
-                  {account.account_number}
+                <MenuItem  key={account.id} value={account.account_id}>
+                  {account.account_id}
                 </MenuItem>
               ))}
             </Select>

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import axiosInstance from "../axios";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button } from "@mui/material";
-import {format, formatISO} from 'date-fns';
+import {format} from 'date-fns';
 import { useNavigate } from "react-router-dom";
+import { getTransactions } from "../services/bank";
 
 
 const TransactionsDashboard = () => {
@@ -10,18 +10,12 @@ const TransactionsDashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        
-        axiosInstance.get('bank/transactions/')
-            .then((res) => {
-                setTransactions(res.data)
-            });
+        getTransactions().then((res) => {
+            setTransactions(res.data);
+        });
     }, []);
 
-    const createTransaction = () => {
-        axiosInstance.post('bank/transactions/', {
-            date: formatISO(new Date()),
-            transaction_type: 'DEBIT',
-        })}
+
 
     return (
         <>
@@ -39,7 +33,7 @@ const TransactionsDashboard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions.map((transaction) => (
+              {transactions?.map((transaction) => (
                 <TableRow
                   key={transaction.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

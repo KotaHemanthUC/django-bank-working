@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axiosInstance from '../axios';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,9 +7,11 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { apiSignup } from '../services/auth';
 
 export default function Register() {
 	const navigate = useNavigate();
+
 	const initialFormData = Object.freeze({
 		email: '',
 		username: '',
@@ -28,16 +29,8 @@ export default function Register() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
-		axiosInstance
-			.post(`users/create/`, {
-				email: formData.email,
-				user_name: formData.username,
-				password: formData.password,
-			})
-			.then((res) => {
-				navigate('/login');
-			});
+        apiSignup(formData.email, formData.username, formData.password)
+        navigate('/login');
 	};
 
 

@@ -1,19 +1,11 @@
-import axiosInstance from "./axios";
-
-export const isLoggedIn = () => {
-    return axiosInstance.get('users/current_user/')
-        .then((res) => {
-            return true;
-        }).catch((err) => {
-            return false;
-        });
-}
+import axiosInstance from "../axios";
 
 export const getCurrentUser = () => {
     return axiosInstance.get('users/current_user/')
         .then((res) => {
             return res.data;
         }).catch((err) => {
+            console.log(err);
             return false;
         });
 }
@@ -49,4 +41,19 @@ export const apiLogout = () => {
             return false;
         });
 }
+
+export const apiSignup = (email, username, password) => {
+    return axiosInstance
+        .post(`users/register/`, {
+            email: email,
+            username: username,
+            password: password,
+        })
+        .then((res) => {
+            return true;
+        }).catch((err) => {
+            return false;
+        });
+}
+
 

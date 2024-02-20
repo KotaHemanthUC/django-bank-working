@@ -13,10 +13,10 @@ const AccountCard = (account) => {
       <React.Fragment>
     <CardContent>
         <div style={{marginBottom: '10px'}} >
-    <Typography variant="h5" component="div">
+    <Typography sx={{ fontSize: 18 }} component="div">
         {account.account.account_number}
       </Typography>
-      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+      <Typography color="text.secondary" gutterBottom>
         {account.account.account_id}
       </Typography>
       </div>
@@ -33,7 +33,7 @@ const AccountCard = (account) => {
         {display: 'flex', justifyContent: 'flex-end'}
     
     }>
-      <Button size="small">View Transactions</Button>
+      <Button size="small" >View Transactions</Button>
     </CardActions>
   </React.Fragment>
       </Card>
