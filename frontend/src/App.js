@@ -11,6 +11,7 @@ import React from "react";
 import Home from "./components/Home";
 import CreateTransactionForm from "./components/CreateTransactionForm";
 import ProtectedElement from "./components/ProtectedElement";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const routes = (
   <React.Fragment>
@@ -43,9 +44,11 @@ function App() {
   const routeArray = createRoutesFromElements(routes);
   const router = createBrowserRouter(routeArray);
   return (
+    <ErrorBoundary fallback={'There was an error, please check the console'}>
       <RouterProvider router={router}>
         <Outlet />
       </RouterProvider>
+    </ErrorBoundary>
   );
 }
 

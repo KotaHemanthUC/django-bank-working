@@ -14,12 +14,12 @@ const useAuth = () => {
   const [currentUser, setCurrentUser] = React.useState(null);
 
   const login = async (username, password) => {
-    const success = await apiLogin(username, password);
-    if (success) {
+    const response = await apiLogin(username, password);
+    if (response.success) {
       setIsAuthenticated(true);
       refreshCurrentUser();
     }
-    return success;
+    return response;
   };
 
   const logout = async () => {

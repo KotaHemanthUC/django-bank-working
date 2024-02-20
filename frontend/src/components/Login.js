@@ -7,10 +7,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import useAuth from "../hooks/useAuth";
+import ApiErrorBoundary from "./ApiErrorBoundary";
 
 const Login = () => {
   const navigate = useNavigate();
   const {login} = useAuth();
+  const [error, setError] = useState(null);
 
   const initialFormData = Object.freeze({
     email: "",
@@ -29,8 +31,13 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(formData.email, formData.password);
+    const response = await login(formData.email, formData.password);
+    if (response.success) {
+
     navigate("/home?tab=accounts");
+    } else {
+      setError(response.error);
+    }
   };
 
   return (
@@ -54,7 +61,7 @@ const Login = () => {
         >
           GPA
         </Typography>
-        <form>
+        <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -90,7 +97,6 @@ const Login = () => {
             variant="contained"
             color="primary"
             style={{ marginTop: "20px" }}
-            onClick={handleSubmit}
           >
             Sign In
           </Button>
@@ -102,6 +108,7 @@ const Login = () => {
           </a>
         </Typography>
       </div>
+      <ApiErrorBoundary error={error} />
     </Container>
   );
 }

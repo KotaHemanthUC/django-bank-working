@@ -32,9 +32,9 @@ export const apiLogin = async (username, password) => {
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
         axiosInstance.defaults.headers['Authorization'] = 'JWT ' + response.data.access;
-        return true;
+        return response
     } else {
-        return false;
+        return response
     }
 };
 
