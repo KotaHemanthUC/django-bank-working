@@ -5,13 +5,15 @@ import uuid
 def create_account_number():
     # Fetch the highest account_id or 0 if no Accounts exist yet
     max_id = Account.objects.aggregate(max_id=models.Max('id')).get('max_id', 0)
-    # Format the new account number
     if max_id is None: max_id = 0
+    # Format the new account_id as A-0001, A-0002, etc. by incrementing the max_id and padding with zeros
     new_account_number = f"A-{max_id + 1:04d}"
     return new_account_number
 
 class Account(models.Model):
-    # using UUID as primary key for better security
+
+    # NOTE: I would normally use a UUID for a primary key, but the excercise mockup uses an AutoField integer
+
     account_number = models.UUIDField(default=uuid.uuid4, editable=False)
     account_id = models.CharField(max_length=20, default=create_account_number, unique=True)
     account_holder = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='accounts', on_delete=models.CASCADE)
@@ -25,7 +27,6 @@ class TransactionType(models.TextChoices):
     DEBIT = 'DEBIT', 'Debit'
 
 class Transaction(models.Model):
-    # Could use human-readable name here for date as well
     date = models.DateTimeField()
     transaction_type = models.CharField(max_length=6, choices=TransactionType.choices)
     note = models.TextField()

@@ -3,7 +3,6 @@ from .serializers import AccountSerializer, TransactionSerializer
 from .models import Account, Transaction
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Sum, Case, When, DecimalField
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import permissions
@@ -79,7 +78,7 @@ class TransactionList(viewsets.ModelViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED, data={"detail": "Authentication credentials were not provided."})
         
     def perform_create(self, serializer):
-        # get the accpunt from the request and then save the transaction
+        # get the account from the request and then save the transaction
         # then update the account balance
         account = Account.objects.get(account_id=self.request.data['account'])
         serializer.save(account=account)
