@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import Logout from "./Logout";
+import Logout from "./auth/Logout";
 
 const Header = (props) => {
     return (

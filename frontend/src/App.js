@@ -1,5 +1,5 @@
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 import React from "react";
 import Home from "./components/Home";
-import CreateTransactionForm from "./components/CreateTransactionForm";
-import ProtectedElement from "./components/ProtectedElement";
-import ErrorBoundary from "./components/ErrorBoundary";
+import CreateTransactionForm from "./components/bank/CreateTransactionForm";
+import ProtectedElement from "./components/auth/ProtectedElement";
+import ErrorBoundary from "./components/errors/ErrorBoundary";
 
 const routes = (
   <React.Fragment>

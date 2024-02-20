@@ -7,8 +7,8 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import useAuth from "../hooks/useAuth";
-import ApiErrorBoundary from "./ApiErrorBoundary";
+import useAuth from "../../hooks/useAuth";
+import ApiErrorBoundary from "../errors/ApiErrorBoundary";
 
 const Register = () => {
   const navigate = useNavigate();

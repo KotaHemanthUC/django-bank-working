@@ -22,6 +22,7 @@ class Account(models.Model):
     def __str__(self):  
         return self.account_number
 
+
 class TransactionType(models.TextChoices):
     CREDIT = 'CREDIT', 'Credit'
     DEBIT = 'DEBIT', 'Debit'
