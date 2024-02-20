@@ -9,15 +9,16 @@ import { useSearchParams } from "react-router-dom";
 
 const useTab = ( defaultValue) => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [currentTab, setCurrentTab] = React.useState(searchParams.get("tab") || defaultValue);
+    const isValidParams = searchParams.get("tab") !== 'undefined' && searchParams.get("tab") !== null
+    const [currentTab, setCurrentTab] = React.useState(isValidParams ? searchParams.get("tab") : defaultValue);
   
     React.useEffect(() => {
       const tabParam = searchParams.get("tab");
-      if (!isNaN(tabParam)) setCurrentTab(tabParam);
+      if (tabParam) setCurrentTab(tabParam);
     }, [searchParams]);
   
     React.useEffect(() => {
-      searchParams.set("tab", currentTab.toString());
+      searchParams.set("tab", currentTab?.toString());
       setSearchParams(searchParams);
     }, [currentTab, searchParams, setSearchParams]);
   

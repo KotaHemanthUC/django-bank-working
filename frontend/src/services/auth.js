@@ -1,86 +1,63 @@
 import axiosInstance from "./axios";
 
+const handleApiResponse = async (request) => {
+    try {
+        const response = await request;
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error("API error:", error.response || error.message || error);
+        return {
+            success: false,
+            error: error.response ? error.response.data : { message: error.message },
+        };
+    }
+};
 
-/**
- * Get the current user from the API
- * @returns {Object} The current user
- */
+export const getCurrentUser = async () => {
+    const response = await handleApiResponse(axiosInstance.get('users/current_user/'));
+    if (response.success) {
+        return response.data;
+    } else {
+        console.error("Error getting current user:", response.error);
+        return false;
+    }
+};
 
-export const getCurrentUser = () => {
-    return axiosInstance.get('users/current_user/')
-        .then((res) => {
-            return res.data;
-        }).catch((err) => {
-            console.log(err);
-            return false;
-        });
-}
+export const apiLogin = async (username, password) => {
+    const response = await handleApiResponse(axiosInstance.post(`api/token/`, {
+        email: username,
+        password: password,
+    }));
+    if (response.success) {
+        localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
+        axiosInstance.defaults.headers['Authorization'] = 'JWT ' + response.data.access;
+        return true;
+    } else {
+        return false;
+    }
+};
 
-/**
- * Log in to the API and store the access token in local storage
- * @param {String} username 
- * @param {String} password 
- * @returns {Boolean} Whether the login was successful
- */
+export const apiLogout = async () => {
+    const response = await handleApiResponse(axiosInstance.post(`users/logout/blacklist/`, {
+        refresh_token: localStorage.getItem('refresh_token'),
+    }));
 
-export const apiLogin = (username, password) => {
-    return axiosInstance
-        .post(`api/token/`, {
-            email: username,
-            password: password,
-        })
-        .then((res) => {
-            localStorage.setItem('access_token', res.data.access);
-            localStorage.setItem('refresh_token', res.data.refresh);
-            axiosInstance.defaults.headers['Authorization'] = 
-                'JWT ' + localStorage.getItem('access_token');
-            return true;
-        }).catch((err) => {
-            return false;
-        });
-}
+    if (response.success) {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        delete axiosInstance.defaults.headers['Authorization'];
+        return true;
+    } else {
+        return false;
+    }
+};
 
-/**
- * Log out of the API and remove the access token from local storage
- * @returns {Boolean} Whether the logout was successful
- */
-
-export const apiLogout = () => {
-    return axiosInstance
-        .post(`users/logout/blacklist/`, {
-            refresh_token: localStorage.getItem('refresh_token'),
-        })
-        .then((res) => {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            axiosInstance.defaults.headers['Authorization'] = null;
-            return true;
-        }).catch((err) => {
-            return false;
-        });
-}
-
-
-/**
- * Sign up for the API
- * @param {String} email
- * @param {String} username
- * @param {String} password
- * @returns {Boolean} Whether the signup was successful
- */
-
-export const apiSignup = (email, username, password) => {
-    return axiosInstance
-        .post(`users/register/`, {
-            email: email,
-            username: username,
-            password: password,
-        })
-        .then((res) => {
-            return true;
-        }).catch((err) => {
-            return false;
-        });
-}
-
-
+export const apiSignup = async (email, username, password) => {
+    const response = await handleApiResponse(axiosInstance.post(`users/create/`, {
+        email: email,
+        username: username,
+        password: password,
+    }));
+    return response;
+};

@@ -30,7 +30,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(formData.email, formData.password);
-    navigate("/home");
+    navigate("/home?tab=accounts");
   };
 
   return (
@@ -95,6 +95,12 @@ const Login = () => {
             Sign In
           </Button>
         </form>
+        <Typography sx={{marginTop:'5%'}}>
+          Don't have an account?{" "}
+          <a href="/register" style={{ color: "blue" }}>
+            Sign Up
+          </a>
+        </Typography>
       </div>
     </Container>
   );

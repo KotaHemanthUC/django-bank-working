@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,11 +13,11 @@ const Register = () => {
 	const navigate = useNavigate();
 	const {signup} = useAuth();
 
-	const initialFormData = Object.freeze({
+	const initialFormData = {
 		email: '',
 		username: '',
 		password: '',
-	});
+	}
 
 	const [formData, updateFormData] = useState(initialFormData);
 
@@ -28,20 +28,30 @@ const Register = () => {
 		});
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = useCallback(async (e) => {
 		e.preventDefault();
-        signup(formData.email, formData.username, formData.password)
-        navigate('/login');
-	};
+		const response = await signup(formData.email, formData.username, formData.password)
+		if (response.success) {
+			navigate('/');
+		}
+	}, [formData, signup, navigate]);
 
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
-			<div>
-				<Typography component="h1" variant="h5">
-					Sign up
+			<div
+				style={{
+					marginTop: "30%",
+					border: 2,
+					borderColor: "black",
+					borderStyle: "solid",
+					padding: "40px",
+					borderRadius: "10px",
+			}}>
+				<Typography component="h1" variant="h5" align='center' sx={{ marginBottom: "20px" }}>
+					GPA Sign up
 				</Typography>
-				<form noValidate>
+				<form onSubmit={handleSubmit}>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
@@ -86,12 +96,11 @@ const Register = () => {
 						fullWidth
 						variant="contained"
 						color="primary"
-
-						onClick={handleSubmit}
+						style={{ marginTop: "20px" }}
 					>
 						Sign Up
 					</Button>
-					<Grid container justify="flex-end">
+					<Grid container justify="flex-end"sx={{marginTop:'5%'}} >
 						<Grid item>
 							<Link href="/" variant="body2">
 								Already have an account? Sign in

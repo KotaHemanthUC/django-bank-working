@@ -21,8 +21,8 @@ export const TabPanel = (props) => {
   
   TabPanel.propTypes = {
     children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
+    index: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
   };
   
 export const a11yProps = (index) => {

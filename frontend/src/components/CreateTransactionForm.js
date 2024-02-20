@@ -51,6 +51,7 @@ const CreateTransactionForm = () => {
               label="Transaction Type"
               onChange={handleChange}
               name="transaction_type"
+              required
             >
               <MenuItem value={"CREDIT"}>CREDIT</MenuItem>
               <MenuItem value={"DEBIT"}>DEBIT</MenuItem>
@@ -66,6 +67,7 @@ const CreateTransactionForm = () => {
               label="Transaction Type"
               name="account"
               onChange={handleChange}
+              required
             >
               {accounts.map((account) => (
                 <MenuItem  key={account.id} value={account.account_id}>
