@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Grid, TextField, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Grid, TextField, Button, Typography } from "@mui/material";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { formatISO } from "date-fns";
-import { createTransaction, getAccounts } from "../services/bank";
+import useBankApi from "../hooks/useBankApi";
 
 const CreateTransactionForm = () => {
-  const [accounts, setAccounts] = useState([]);
+  const {accounts, createNewTransaction} = useBankApi();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getAccounts().then((res) => {
-      setAccounts(res.data);
-    });
-  }, []);
 
   const initialFormData = Object.freeze({
     tranaction_type: "",
@@ -24,9 +18,10 @@ const CreateTransactionForm = () => {
   const [formData, updateFormData] = useState(initialFormData);
 
   const handleChange = (e) => {
+    const {name, value} = e.target;
     updateFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
@@ -36,14 +31,15 @@ const CreateTransactionForm = () => {
       ...formData,
       date: formatISO(new Date()),
     };
-    createTransaction(data).then((res) => {
-      navigate("/home");
-    });
+    createNewTransaction(data);
+    navigate("/home?tab=transactions");
   };
 
   return (
+    
     <form onSubmit={handleSubmit}>
       <Grid container direction="column" spacing={2} sx={{padding:'10%'}}>
+      <Typography sx={{textAlign:'center'}} variant="h5">Create New Transaction</Typography>
         <Grid item>
           <FormControl fullWidth>
             <InputLabel id="trans-type-simple-select-label">

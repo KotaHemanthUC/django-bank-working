@@ -1,15 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { apiLogout } from "../services/auth";
+import useAuth  from "../hooks/useAuth";
 
 
 const Logout = () => {
     const navigate = useNavigate();
+    const {logout} = useAuth();
 
     const handleLogout = () => {
-        apiLogout();
-        navigate('/login');
+        logout();
+        navigate('/');
     };
 
     return (

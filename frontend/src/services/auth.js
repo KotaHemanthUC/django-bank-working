@@ -1,5 +1,11 @@
 import axiosInstance from "./axios";
 
+
+/**
+ * Get the current user from the API
+ * @returns {Object} The current user
+ */
+
 export const getCurrentUser = () => {
     return axiosInstance.get('users/current_user/')
         .then((res) => {
@@ -9,6 +15,13 @@ export const getCurrentUser = () => {
             return false;
         });
 }
+
+/**
+ * Log in to the API and store the access token in local storage
+ * @param {String} username 
+ * @param {String} password 
+ * @returns {Boolean} Whether the login was successful
+ */
 
 export const apiLogin = (username, password) => {
     return axiosInstance
@@ -27,6 +40,11 @@ export const apiLogin = (username, password) => {
         });
 }
 
+/**
+ * Log out of the API and remove the access token from local storage
+ * @returns {Boolean} Whether the logout was successful
+ */
+
 export const apiLogout = () => {
     return axiosInstance
         .post(`users/logout/blacklist/`, {
@@ -41,6 +59,15 @@ export const apiLogout = () => {
             return false;
         });
 }
+
+
+/**
+ * Sign up for the API
+ * @param {String} email
+ * @param {String} username
+ * @param {String} password
+ * @returns {Boolean} Whether the signup was successful
+ */
 
 export const apiSignup = (email, username, password) => {
     return axiosInstance

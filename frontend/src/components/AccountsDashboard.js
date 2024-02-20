@@ -8,11 +8,9 @@ const AccountsDashboard = (props) => {
     return (
         <>
         <Button variant="contained" style={{marginBottom: '20px'}} onClick={() => props.createNewAccount()}>Create New Account</Button>
-        <Grid container columns={5} columnGap={5} rowGap={5}>
+        <Grid container columns={12} columnGap={4}>
         { props.accounts?.map((account) => (
-            <Grid key={account.id} item xs={2}>
             <AccountCard  account={account} />
-            </Grid>
         ))}
         </Grid>
         </>

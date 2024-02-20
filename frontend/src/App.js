@@ -1,5 +1,4 @@
 import Login from "./components/Login";
-import TransactionsDashboard from "./components/TransactionsDashboard";
 import Register from "./components/Register";
 import {
   createBrowserRouter,
@@ -15,7 +14,7 @@ import ProtectedElement from "./ProtectedElement";
 
 const routes = (
   <React.Fragment>
-    <Route path="login" element={<Login />} />,
+    <Route path="/" element={<Login />} />,
       <Route
         path="home"
         element={
@@ -30,15 +29,6 @@ const routes = (
         element={
           <ProtectedElement>
             <CreateTransactionForm />
-          </ProtectedElement>
-        }
-      />
-      ,
-      <Route
-        path="transactions"
-        element={
-          <ProtectedElement>
-            <TransactionsDashboard />
           </ProtectedElement>
         }
       />
