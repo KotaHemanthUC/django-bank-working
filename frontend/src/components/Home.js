@@ -6,6 +6,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TransactionsDashboard from './TransactionsDashboard';
 import AccountsDashboard from './AccountsDashboard';
+import Logout from './Logout';
+import axiosInstance from '../axios';
+import { UserContext } from '../';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -20,7 +23,7 @@ const TabPanel = (props) => {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -42,22 +45,30 @@ const a11yProps = (index) => {
 
 const VerticalTabs = () => {
   const [value, setValue] = React.useState(0);
+  const [user, setUser] = React.useState({});
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  
+
+
+
   return (
-    <Box
-      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', width: '100%'}}
+    <>
+        <Box
+      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', width: '100%', height: '90vh'}}
     >
+
       <Tabs
         orientation="vertical"
         variant="scrollable"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: 'divider', width: '10%'}}
+        sx={{ borderRight: 1, borderTop: 1,  borderColor: 'divider', width: '15%'}}
       >
         <Tab label="Accounts" {...a11yProps(0)} />
         <Tab label="Transactions" {...a11yProps(1)} />
@@ -69,6 +80,8 @@ const VerticalTabs = () => {
         <TransactionsDashboard  />
       </TabPanel>
     </Box>
+        </>
+    
   );
 }
 

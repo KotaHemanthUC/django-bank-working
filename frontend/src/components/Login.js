@@ -8,6 +8,8 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { apiLogin } from '../auth';
+
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -27,28 +29,11 @@ export default function Login() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
-		axiosInstance
-			.post(`api/token/`, {
-				email: formData.email,
-				password: formData.password,
-			})
-			.then((res) => {
-                localStorage.setItem('access_token', res.data.access);
-                localStorage.setItem('refresh_token', res.data.refresh);
-                axiosInstance.defaults.headers.Authorization =
-                    'JWT ' + localStorage.getItem('access_token');
-                navigate('/accounts');
-			});
+        apiLogin(formData.email, formData.password);
+        navigate('/home');
 	};
 
-    // Check if the user is already logged in if so route to the dashboard
-    useEffect(() => {
-        if (localStorage.getItem('access_token')) {
-            navigate('/accounts');
-        }
-    }, [navigate]);
-
+    
 
 	return (
 		<Container component="main" maxWidth="xs">

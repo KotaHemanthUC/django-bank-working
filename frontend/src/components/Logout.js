@@ -1,6 +1,7 @@
 import React from "react";
 import axiosInstance from "../axios";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 
 const Logout = () => {
@@ -16,13 +17,12 @@ const Logout = () => {
                 localStorage.removeItem('refresh_token');
                 axiosInstance.defaults.headers['Authorization'] = null;
                 navigate('/login');
-                console.log(res);
             });
     };
 
     return (
         <div>
-            <button onClick={handleLogout}>Logout</button>
+            <Button variant="contained" onClick={handleLogout}>Logout</Button>
         </div>
     );
 }

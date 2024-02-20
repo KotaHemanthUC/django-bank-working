@@ -1,19 +1,31 @@
 import React, {useEffect, useState} from "react";
 import axiosInstance from "../axios";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button } from "@mui/material";
+import {format, formatISO} from 'date-fns';
+import { useNavigate } from "react-router-dom";
 
 
 const TransactionsDashboard = () => {
     const [transactions , setTransactions] = useState([])
+    const navigate = useNavigate();
 
     useEffect(() => {
+        
         axiosInstance.get('bank/transactions/')
             .then((res) => {
                 setTransactions(res.data)
             });
     }, []);
 
+    const createTransaction = () => {
+        axiosInstance.post('bank/transactions/', {
+            date: formatISO(new Date()),
+            transaction_type: 'DEBIT',
+        })}
+
     return (
+        <>
+        <Button variant="contained" style={{marginBottom: '10px'}} onClick={() => navigate('/transactions/create')}>Create New Transaction</Button>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -36,7 +48,7 @@ const TransactionsDashboard = () => {
                     {transaction.id}
                   </TableCell>
                   <TableCell component="th" align="center" scope="row">
-                    {transaction.date}
+                    {format(transaction.date, 'PP' )}
                   </TableCell>
                   <TableCell align="center">{transaction.transaction_type}</TableCell>
                   <TableCell align="center">{transaction.account}</TableCell>
@@ -47,6 +59,7 @@ const TransactionsDashboard = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        </>
       );
     }
 

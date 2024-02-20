@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import React from 'react';
 import VerticalTabs from './components/Home';
+import CreateTransactionForm from './components/CreateTransactionForm';
 
 const Root = () => {
   return (
@@ -24,11 +25,10 @@ const Root = () => {
 
 const routes = (
   <React.Fragment>
+    <Route path="login" element={<Login />} />,
     <Route path='/' element={<Root />} >
-      <Route index element={<Login />} />
-      <Route path="login" element={<Login />} />,
       <Route path="home" element={<VerticalTabs />} />,
-      <Route path="accounts" element={<AccountsDashboard />} />,
+      <Route path="transactions/create" element={<CreateTransactionForm />} />,
       <Route path="transactions" element={<TransactionsDashboard />} />,
       <Route path="register" element={<Register />} />,
     </Route>
@@ -43,7 +43,7 @@ function App() {
   const router = createBrowserRouter(routeArray);
   return (
     <RouterProvider router={router}>
-      <Outlet />
+        <Outlet />
     </RouterProvider>
   );
 }
