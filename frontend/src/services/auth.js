@@ -56,7 +56,7 @@ export const apiLogout = async () => {
 export const apiSignup = async (email, username, password) => {
     const response = await handleApiResponse(axiosInstance.post(`users/create/`, {
         email: email,
-        username: username,
+        user_name: username,
         password: password,
     }));
     return response;
