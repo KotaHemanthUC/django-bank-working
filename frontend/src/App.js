@@ -13,18 +13,9 @@ import Home from "./components/Home";
 import CreateTransactionForm from "./components/CreateTransactionForm";
 import ProtectedElement from "./ProtectedElement";
 
-const Root = () => {
-  return (
-    <div>
-      <Outlet />
-    </div>
-  );
-};
-
 const routes = (
   <React.Fragment>
     <Route path="login" element={<Login />} />,
-    <Route path="/" element={<Root />}>
       <Route
         path="home"
         element={
@@ -53,13 +44,13 @@ const routes = (
       />
       ,
       <Route path="register" element={<Register />} />,
-    </Route>
   </React.Fragment>
 );
 
-const routeArray = createRoutesFromElements(routes);
+
 
 function App() {
+  const routeArray = createRoutesFromElements(routes);
   const router = createBrowserRouter(routeArray);
   return (
       <RouterProvider router={router}>

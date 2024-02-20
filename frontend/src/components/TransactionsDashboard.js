@@ -1,22 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button } from "@mui/material";
 import {format} from 'date-fns';
 import { useNavigate } from "react-router-dom";
-import { getTransactions } from "../services/bank";
 
 
-const TransactionsDashboard = () => {
-    const [transactions , setTransactions] = useState([])
+const TransactionsDashboard = (props) => {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        getTransactions().then((res) => {
-            setTransactions(res.data);
-        });
-    }, []);
-
-
-
     return (
         <>
         <Button variant="contained" style={{marginBottom: '10px'}} onClick={() => navigate('/transactions/create')}>Create New Transaction</Button>
@@ -33,7 +22,7 @@ const TransactionsDashboard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions?.map((transaction) => (
+              {props.transactions?.map((transaction) => (
                 <TableRow
                   key={transaction.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

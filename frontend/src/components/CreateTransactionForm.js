@@ -43,7 +43,7 @@ const CreateTransactionForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container direction="column" spacing={2}>
+      <Grid container direction="column" spacing={2} sx={{padding:'10%'}}>
         <Grid item>
           <FormControl fullWidth>
             <InputLabel id="trans-type-simple-select-label">

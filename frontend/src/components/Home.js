@@ -9,6 +9,7 @@ import Logout from "./Logout";
 import Grid from "@mui/material/Grid";
 import { getCurrentUser } from "../services/auth";
 import { useSearchParams } from "react-router-dom";
+import { getAccounts, createAccount, getTransactions } from "../services/bank";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -40,21 +41,29 @@ const a11yProps = (index) => {
 };
 
 const Home = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [accounts, setAccounts] = React.useState([]);
+  const [transactions, setTransactions] = React.useState([]);
   const [currentTab, setCurrentTab] = React.useState(
     parseInt(searchParams.get("tab")) || 0
   );
-  const [user, setUser] = React.useState({});
   
-
-  const handleTabChange = (event, newValue) => {
-    setCurrentTab(newValue);
-  };
+  const [user, setUser] = React.useState({});
 
   React.useEffect(() => {
+    console.log("once");
+    getAccounts().then((res) => {
+      setAccounts(res.data);
+    });
+    getTransactions().then((res) => {
+      setTransactions(res.data);
+    });
     getCurrentUser().then((res) => {
       setUser(res);
     });
+  }, []);
+
+  React.useEffect(() => {
     if (searchParams.get("tab")) {
       setCurrentTab(parseInt(searchParams.get("tab")));
     }
@@ -64,6 +73,16 @@ const Home = () => {
     searchParams.set("tab", currentTab);
     setSearchParams(searchParams);
   }, [currentTab, searchParams, setSearchParams]);
+
+  const createNewAccount = () => {
+    createAccount().then((res) => {
+      setAccounts([...accounts, res.data]);
+    });
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setCurrentTab(newValue);
+  };
 
   return (
     <>
@@ -101,10 +120,13 @@ const Home = () => {
           <Tab label="Transactions" {...a11yProps(1)} />
         </Tabs>
         <TabPanel value={currentTab} index={0}>
-          <AccountsDashboard />
+          <AccountsDashboard
+            accounts={accounts}
+            createNewAccount={createNewAccount}
+          />
         </TabPanel>
         <TabPanel value={currentTab} index={1}>
-          <TransactionsDashboard />
+          <TransactionsDashboard transactions={transactions} />
         </TabPanel>
       </Box>
     </>

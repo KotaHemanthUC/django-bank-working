@@ -66,6 +66,7 @@ const axiosInstance = axios.create({
     
                                 axiosInstance.defaults.headers['Authorization'] =
                                     'JWT ' + response.data.access;
+                                    
                                 originalRequest.headers['Authorization'] =
                                     'JWT ' + response.data.access;
     

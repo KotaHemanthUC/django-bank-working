@@ -1,29 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import AccountCard from "./AccountCard";
 import { Button, Grid } from "@mui/material";
-import { getAccounts, createAccount } from "../services/bank";
+import PropTypes from 'prop-types';
 
-
-const AccountsDashboard = () => {
-    const [accounts , setAccounts] = useState([])
-
-    useEffect(() => {
-        getAccounts().then((res) => {
-            setAccounts(res.data);
-        });
-    }, []);
-
-    const createNewAccount = () => {
-        createAccount().then((res) => {
-            setAccounts([...accounts, res.data]);
-        });
-    }
+const AccountsDashboard = (props) => {
 
     return (
         <>
-        <Button variant="contained" style={{marginBottom: '20px'}} onClick={() => createNewAccount()}>Create New Account</Button>
+        <Button variant="contained" style={{marginBottom: '20px'}} onClick={() => props.createNewAccount()}>Create New Account</Button>
         <Grid container columns={5} columnGap={5} rowGap={5}>
-        {accounts.map((account) => (
+        { props.accounts?.map((account) => (
             <Grid key={account.id} item xs={2}>
             <AccountCard  account={account} />
             </Grid>
@@ -31,6 +17,11 @@ const AccountsDashboard = () => {
         </Grid>
         </>
     );
-    }
+}
+
+AccountCard.propTypes = {
+    accounts: PropTypes.array,
+    createNewAccount: PropTypes.func
+}
 
 export default AccountsDashboard;

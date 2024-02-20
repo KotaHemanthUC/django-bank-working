@@ -6,18 +6,18 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-const AccountCard = (account) => {
+const AccountCard = (props) => {
   return (
-    <Box sx={{ minWidth: 275 }}>
+    <Box sx={{ minWidth: 230 }}>
       <Card variant="outlined">
       <React.Fragment>
     <CardContent>
         <div style={{marginBottom: '10px'}} >
     <Typography sx={{ fontSize: 18 }} component="div">
-        {account.account.account_number}
+        {props.account.account_number}
       </Typography>
       <Typography color="text.secondary" gutterBottom>
-        {account.account.account_id}
+        {props.account.account_id}
       </Typography>
       </div>
       <div style={{display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
@@ -25,13 +25,12 @@ const AccountCard = (account) => {
         Current Balance:
       </Typography>
       <Typography sx={{ mb: 1.5 }}>
-        ${account.account.current_balance}
+        ${props.account.current_balance}
       </Typography>
       </div>
     </CardContent>
     <CardActions style={
         {display: 'flex', justifyContent: 'flex-end'}
-    
     }>
       <Button size="small" >View Transactions</Button>
     </CardActions>

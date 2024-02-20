@@ -1,4 +1,4 @@
-import axiosInstance from "../axios";
+import axiosInstance from "./axios";
 
 export const getCurrentUser = () => {
     return axiosInstance.get('users/current_user/')

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { apiSignup } from '../services/auth';
 
-export default function Register() {
+const Register = () => {
 	const navigate = useNavigate();
 
 	const initialFormData = Object.freeze({
@@ -32,7 +32,6 @@ export default function Register() {
         apiSignup(formData.email, formData.username, formData.password)
         navigate('/login');
 	};
-
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -103,3 +102,5 @@ export default function Register() {
 		</Container>
 	);
 }
+
+export default Register;
