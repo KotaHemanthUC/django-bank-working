@@ -19,6 +19,16 @@ class CustomUserCreate(APIView):
                 return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request):
+        # return the user's details
+        if request.user.is_authenticated:
+            serializer = CustomUserSerializer(request.user)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED, data={"detail": "Authentication credentials were not provided."})
+    
+
+
 
 class BlacklistTokenUpdateView(APIView):
     permission_classes = [AllowAny]

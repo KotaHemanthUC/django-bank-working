@@ -65,3 +65,14 @@ class TransactionList(viewsets.ModelViewSet):
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED, data={"detail": "Authentication credentials were not provided."})
+        
+    def perform_create(self, serializer):
+        # get the accpunt from the request and then save the transaction
+        # then update the account balance
+        account = Account.objects.get(account_id=self.request.data['account'])
+        serializer.save(account=account)
+        if serializer.validated_data['transaction_type'] == 'CREDIT':
+            account.current_balance += serializer.validated_data['amount']
+        else:
+            account.current_balance -= serializer.validated_data['amount']
+        account.save()
