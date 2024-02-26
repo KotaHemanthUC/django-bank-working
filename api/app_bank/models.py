@@ -20,20 +20,30 @@ class Account(models.Model):
     current_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):  
-        return self.account_number
+        return str(self.account_number)
 
 
-class TransactionType(models.TextChoices):
-    CREDIT = 'CREDIT', 'Credit'
-    DEBIT = 'DEBIT', 'Debit'
 
 class Transaction(models.Model):
+    class TransactionType(models.TextChoices):
+        CREDIT = 'CREDIT', 'Credit'
+        DEBIT = 'DEBIT', 'Debit'
+
     date = models.DateTimeField()
     transaction_type = models.CharField(max_length=6, choices=TransactionType.choices)
     note = models.TextField()
     # decimal with max 10 digits and 2 decimal places for currency
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     account = models.ForeignKey(Account, to_field='account_id', related_name='transactions', on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        # Update the account's current_balance when saving a new Transaction
+        if self.transaction_type == 'CREDIT':
+            self.account.current_balance += self.amount
+        else:
+            self.account.current_balance -= self.amount
+        self.account.save()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.date} - {self.transaction_type} - {self.amount}"

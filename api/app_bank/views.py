@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import permissions
+from users.models import BankUser
 
 class AccountViewPermission(permissions.BasePermission):
     message = 'view is restricted to the owner only'
@@ -20,7 +21,9 @@ class AccountList(viewsets.ModelViewSet):
         return Account.objects.all()
     
     def perform_create(self, serializer):
-        serializer.save(account_holder=self.request.user)
+        # create a BankUser object and assign it to the account_holder field 
+        user = BankUser.objects.get(id=self.request.data['account_holder'])
+        serializer.save(account_holder=user)
     
     def get_object(self):
         return super().get_object()
@@ -78,12 +81,4 @@ class TransactionList(viewsets.ModelViewSet):
             return Response(status=status.HTTP_401_UNAUTHORIZED, data={"detail": "Authentication credentials were not provided."})
         
     def perform_create(self, serializer):
-        # get the account from the request and then save the transaction
-        # then update the account balance
-        account = Account.objects.get(account_id=self.request.data['account'])
-        serializer.save(account=account)
-        if serializer.validated_data['transaction_type'] == 'CREDIT':
-            account.current_balance += serializer.validated_data['amount']
-        else:
-            account.current_balance -= serializer.validated_data['amount']
-        account.save()
+        serializer.save()
