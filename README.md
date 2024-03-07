@@ -1,4 +1,4 @@
-# Finally Interview Exercise
+# Django Bank Sample App
 
 ## Instructions
 - Clone the repository
