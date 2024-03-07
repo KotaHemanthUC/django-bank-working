@@ -11,9 +11,6 @@ def create_account_number():
     return new_account_number
 
 class Account(models.Model):
-
-    # NOTE: I would normally use a UUID for a primary key, but the excercise mockup uses an AutoField integer
-
     account_number = models.UUIDField(default=uuid.uuid4, editable=False)
     account_id = models.CharField(max_length=20, default=create_account_number, unique=True)
     account_holder = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='accounts', on_delete=models.CASCADE)
