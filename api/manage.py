@@ -1,3 +1,5 @@
+#Starting Point : https://realpython.com/django-migrations-a-primer/
+
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
